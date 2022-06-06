@@ -13,16 +13,16 @@ for ( let i = 0; i < collisions.length; i += 60){
 }
 
 class Fronteira {
-    static width = 87.9
-    static height = 87.2
+    static width = 88
+    static height = 88
     constructor({position}){
        this.position = position 
        this.width = 87.9
-       this.height = 87.2
+       this.height = 87.9
     }
 
     draw(){
-        k.fillStyle = 'blue'
+        k.fillStyle = 'rgba(255,0,0,0.2'
         k.fillRect(this.position.x, this.position.y, this.width,this.height)
     }
 }
@@ -117,51 +117,130 @@ const keys = {
     }
 }
 
-const testFronteira = new Fronteira({
-    position:{
-        x: 400,
-        y: 400
-    }
-})
 
 
 
-const movimentos = [background, testFronteira]
+const movimentos = [background,...fronteiras]
+
+function boxCollider({box1, box2}){
+    return(
+       box1.position.x + box1.width >= (box2.position.x + 32) && 
+       box1.position.x <= (box2.position.x - 32) + box2.width &&
+       box1.position.y <= (box2.position.y - 32) + box2.height &&
+       box1.position.y + box1.height >= (box2.position.y + 16)
+    )
+}
+
+
 function animate(){
     window.requestAnimationFrame(animate)
     background.draw()
-    // fronteiras.forEach(fronteira => {
-    //     fronteira.draw()
-    // })
-    testFronteira.draw()
+    fronteiras.forEach(fronteira => {
+        fronteira.draw()
+
+        if(
+            boxCollider({
+                box1: player,
+                box2: fronteira
+            })
+        ){
+            console.log("Colidindo!")
+        }
+    })
     player.draw()
 
-    if(player.position.x + player.width >= testFronteira.position.x && 
-       player.position.x <= testFronteira.position.x + testFronteira.width &&
-       player.position.y <= testFronteira.position.y + testFronteira.height &&
-       player.position.y + player.height >= testFronteira.position.y){
-        console.log("Colidindo!")
-    }
+  
 
       
 
-
+      let movimentando = true;
       if(keys.w.pressed && lastKey === 'w') {
+          for ( let i = 0; i < fronteiras.length; i++){
+              const fronteira = fronteiras[i]
+            if(
+                boxCollider({
+                    box1: player,
+                    box2: {...fronteira,position: {
+                        x: fronteira.position.x,
+                        y: fronteira.position.y + 5
+                    }}
+                })
+            ){
+                movimentando = false
+                break
+            }
+          }
+          
+          if(movimentando)
           movimentos.forEach(movimento => {
               movimento.position.y += 5
           })
     }
       else if(keys.a.pressed && lastKey === 'a') {
+        for ( let i = 0; i < fronteiras.length; i++){
+            const fronteira = fronteiras[i]
+          if(
+              boxCollider({
+                  box1: player,
+                  box2: {...fronteira,position: {
+                      x: fronteira.position.x + 5,
+                      y: fronteira.position.y 
+                  }}
+              })
+          ){
+              console.log("Colidindo!")
+              movimentando = false
+              break
+          }
+        }
+        
+        if(movimentando)
         movimentos.forEach(movimento => {
             movimento.position.x += 5
         })
         }
       else if(keys.s.pressed && lastKey === 's') {
+        for ( let i = 0; i < fronteiras.length; i++){
+            const fronteira = fronteiras[i]
+          if(
+              boxCollider({
+                  box1: player,
+                  box2: {...fronteira,position: {
+                      x: fronteira.position.x,
+                      y: fronteira.position.y - 5 
+                  }}
+              })
+          ){
+              console.log("Colidindo!")
+              movimentando = false
+              break
+          }
+        }
+        
+        if(movimentando)
         movimentos.forEach(movimento => {
             movimento.position.y -= 5
         })
         }
       else if(keys.d.pressed && lastKey === 'd') {
+        for ( let i = 0; i < fronteiras.length; i++){
+            const fronteira = fronteiras[i]
+          if(
+              boxCollider({
+                  box1: player,
+                  box2: {...fronteira,position: {
+                      x: fronteira.position.x - 5,
+                      y: fronteira.position.y 
+                  }}
+              })
+          ){
+              console.log("Colidindaaaa!")
+              movimentando = false
+              break
+          }
+        }
+        
+        if(movimentando)
         movimentos.forEach(movimento => {
             movimento.position.x -= 5
         })
