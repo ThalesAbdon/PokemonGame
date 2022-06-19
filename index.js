@@ -1,8 +1,6 @@
 const canvas = document.querySelector('canvas')
 const k = canvas.getContext('2d')
 
-
-
 canvas.width = 1024
 canvas.height = 576
 
@@ -12,20 +10,6 @@ for ( let i = 0; i < collisions.length; i += 60){
     collisionsMap.push(collisions.slice(i,60 + i)) 
 }
 
-class Fronteira {
-    static width = 88
-    static height = 88
-    constructor({position}){
-       this.position = position 
-       this.width = 87.9
-       this.height = 87.9
-    }
-
-    draw(){
-        k.fillStyle = 'rgba(255,0,0,0.2'
-        k.fillRect(this.position.x, this.position.y, this.width,this.height)
-    }
-}
 
 const fronteiras = []
 const offset = {
@@ -49,47 +33,32 @@ collisionsMap.forEach( (row,auxHeight) =>{
 const image = new Image()
 image.src = './IMG/map.png'
 
-const playerImagem = new Image()
-playerImagem.src = './IMG/playerDown.png' 
+const playerDownImagem = new Image()
+playerDownImagem.src = './IMG/PlayerDown.png' 
 
-class Sprite {
-    constructor({position,velocity,image,frames = {max : 1}}){
-        this.position = position
-        this.image = image
-        this.frames = frames
-        
-        this.image.onload = () =>{
-            this.width = this.image.width / this.frames.max
-            this.height = this.image.height
-            console.log(this.width)
-            console.log(this.height)
-        }
+const playerUpImagem = new Image()
+playerUpImagem.src = './IMG/PlayerTop.png' 
 
-    }
+const playerLeftImagem = new Image()
+playerLeftImagem.src = './IMG/PlayerEsquerda.png' 
 
-    draw(){
-       
-        k.drawImage(
-            this.image,
-            0,
-            0,
-            this.image.width / this.frames.max,
-            this.image.height,
-            this.position.x,
-            this.position.y,
-            this.image.width / this.frames.max,
-            this.image.height)
-    }
-}
+const playerRightImagem = new Image()
+playerRightImagem.src = './IMG/PlayerDireita.png' 
 
 const player = new Sprite({
     position:{
         x: canvas.width /2 -  128 /4 /2  -105, 
         y:canvas.height / 2 - 128 / 2 
     },
-    image:playerImagem,
+    image:playerDownImagem,
     frames: {
         max:4
+    },
+    sprites:{
+        up: playerUpImagem,
+        left: playerLeftImagem,
+        right: playerRightImagem,
+        down: playerDownImagem
     }
 })
 
@@ -154,7 +123,10 @@ function animate(){
       
 
       let movimentando = true;
+      player.movimentando = false;
       if(keys.w.pressed && lastKey === 'w') {
+        player.movimentando = true;
+        player.image = player.sprites.up
           for ( let i = 0; i < fronteiras.length; i++){
               const fronteira = fronteiras[i]
             if(
@@ -177,6 +149,8 @@ function animate(){
           })
     }
       else if(keys.a.pressed && lastKey === 'a') {
+        player.movimentando = true;
+        player.image = player.sprites.left
         for ( let i = 0; i < fronteiras.length; i++){
             const fronteira = fronteiras[i]
           if(
@@ -200,6 +174,8 @@ function animate(){
         })
         }
       else if(keys.s.pressed && lastKey === 's') {
+        player.movimentando = true;
+        player.image = player.sprites.down
         for ( let i = 0; i < fronteiras.length; i++){
             const fronteira = fronteiras[i]
           if(
@@ -223,6 +199,8 @@ function animate(){
         })
         }
       else if(keys.d.pressed && lastKey === 'd') {
+        player.movimentando = true;
+        player.image = player.sprites.right
         for ( let i = 0; i < fronteiras.length; i++){
             const fronteira = fronteiras[i]
           if(
