@@ -1,15 +1,19 @@
 const canvas = document.querySelector('canvas')
 const k = canvas.getContext('2d')
+console.log(battleZonesDados)
 
 canvas.width = 1024
 canvas.height = 576
 
 const collisionsMap = []
-
 for ( let i = 0; i < collisions.length; i += 60){
     collisionsMap.push(collisions.slice(i,60 + i)) 
 }
 
+const battleZoneMap = []
+for ( let i = 0; i < battleZonesDados.length; i += 60){
+    battleZoneMap.push(battleZonesDados.slice(i,60 + i)) 
+}
 
 const fronteiras = []
 const offset = {
@@ -29,6 +33,20 @@ collisionsMap.forEach( (row,auxHeight) =>{
     })
 })
 
+const battleZones = []
+
+battleZoneMap.forEach( (row,auxHeight) =>{
+    row.forEach( (symbol,auxWidth) => {
+        if(symbol ===  7986)
+        battleZones.push(new Fronteira({position: {
+            x: auxWidth * Fronteira.width + offset.x,
+            y: auxHeight * Fronteira.height + offset.y
+
+        }}))
+    })
+})
+
+console.log(battleZones)
 
 const image = new Image()
 image.src = './IMG/map.png'
@@ -89,7 +107,7 @@ const keys = {
 
 
 
-const movimentos = [background,...fronteiras]
+const movimentos = [background,...fronteiras, ...battleZones]
 
 function boxCollider({box1, box2}){
     return(
@@ -116,17 +134,49 @@ function animate(){
             console.log("Colidindo!")
         }
     })
+
+    battleZones.forEach((battleZone) =>{
+        battleZone.draw()
+    })
     player.draw()
 
-  
+    if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed){
+        for ( let i = 0; i < battleZones.length; i++){
+            const battleZone = battleZones[i]
+            const overTouchArea = 
+                (Math.min(
+                    player.position.x + player.width,
+                    battleZone.position.x + battleZone.width
+                )- 
+                Math.max(player.position.x, battleZone.position.x)) *
+ 
+                 (Math.min(
+                    player.position.y + player.height,
+                    battleZone.position.y + battleZone.height
+                 ) -
+                  Math.max(player.position.y, battleZone.position.y))               
+          if(
+              boxCollider({
+                  box1: player,
+                  box2: battleZone
+              }) && 
+              overTouchArea > (player.width * player.height) / 4 &&
+              Math.random() < 0.05
+          ){
+              console.log("ZONA DE BATALHA!")
+              break
+          }
+        }
 
-      
+    }
+
 
       let movimentando = true;
       player.movimentando = false;
       if(keys.w.pressed && lastKey === 'w') {
         player.movimentando = true;
         player.image = player.sprites.up
+
           for ( let i = 0; i < fronteiras.length; i++){
               const fronteira = fronteiras[i]
             if(
@@ -142,6 +192,8 @@ function animate(){
                 break
             }
           }
+
+
           
           if(movimentando)
           movimentos.forEach(movimento => {
