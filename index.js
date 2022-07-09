@@ -184,11 +184,17 @@ function animate(){
                 onComplete(){
                     gsap.to('#overlappingDiv',{
                         opacity: 1,
-                        duration: 0.4
+                        duration: 0.2,
+                        onComplete(){
+                         //ativa a animação de batalha
+                          animateBattle()
+                          gsap.to('#overlappingDiv',{
+                            opacity: 0,
+                            duration: 0.1,})
+                        }
                     })
 
-                    //ativa a animação de batalha
-                    animateBattle()
+                   
 
             
                 }
@@ -308,10 +314,20 @@ function animate(){
 }
 animate()
 
+const battleBackgroundImage = new Image()
+battleBackgroundImage.src = './IMG/battleBackgrounds.png'
+const battleBackground = new Sprite({position: {
+    x: 0,
+    y: 0
+ },
+  image: battleBackgroundImage
+})
 function animateBattle(){
     window.requestAnimationFrame(animateBattle)
-    console.log('Animação da batalhata!!')
+    battleBackground.draw()
 }
+
+//animateBattle()
 
 let lastKey = ''
 
