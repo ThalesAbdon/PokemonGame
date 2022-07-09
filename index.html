@@ -4,7 +4,18 @@ body{
 }
 </style>
 
-<canvas></canvas>
+<div style="display: inline-block; position: relative;">
+    <div
+    id ="overlappingDiv"
+    style="background-color: black; position:absolute;
+     top: 0; right: 0; bottom: 0; left: 0; opacity: 0;
+     pointer-events: none;"></div>
+    <canvas></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js" 
+integrity="sha512-VEBjfxWUOyzl0bAwh4gdLEaQyDYPvLrZql3pw1ifgb6fhEvZl9iDDehwHZ+dsMzA0Jfww8Xt7COSZuJ/slxc4Q==" 
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="data/collision.js"></script>
 <script src="data/ZonaBatalha.js"></script>
 <script src="classes.js"></script>

@@ -118,9 +118,13 @@ function boxCollider({box1, box2}){
     )
 }
 
+const battle = {
+    started: false
+}
 
 function animate(){
-    window.requestAnimationFrame(animate)
+    const animationId = window.requestAnimationFrame(animate)
+    console.log(animationId)
     background.draw()
     fronteiras.forEach(fronteira => {
         fronteira.draw()
@@ -140,6 +144,11 @@ function animate(){
     })
     player.draw()
 
+      let movimentando = true;
+      player.movimentando = false;
+      if(battle.started) return
+
+    //Ativação da Batalha
     if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed){
         for ( let i = 0; i < battleZones.length; i++){
             const battleZone = battleZones[i]
@@ -163,7 +172,27 @@ function animate(){
               overTouchArea > (player.width * player.height) / 4 &&
               Math.random() < 0.05
           ){
-              console.log("ZONA DE BATALHA!")
+              console.log("BATALHA ATIVADA!")
+              //desativa a animação
+              window.cancelAnimationFrame(animationId)
+              battle.started = true
+              gsap.to('#overlappingDiv', {
+                opacity: 1,
+                repeat: 12,
+                yoyo: true,
+                duration: 0.1,
+                onComplete(){
+                    gsap.to('#overlappingDiv',{
+                        opacity: 1,
+                        duration: 0.4
+                    })
+
+                    //ativa a animação de batalha
+                    animateBattle()
+
+            
+                }
+            })
               break
           }
         }
@@ -171,8 +200,7 @@ function animate(){
     }
 
 
-      let movimentando = true;
-      player.movimentando = false;
+      
       if(keys.w.pressed && lastKey === 'w') {
         player.movimentando = true;
         player.image = player.sprites.up
@@ -279,6 +307,11 @@ function animate(){
       
 }
 animate()
+
+function animateBattle(){
+    window.requestAnimationFrame(animateBattle)
+    console.log('Animação da batalhata!!')
+}
 
 let lastKey = ''
 
