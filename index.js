@@ -70,7 +70,8 @@ const player = new Sprite({
     },
     image:playerDownImagem,
     frames: {
-        max:4
+        max:4,
+        hold: 10
     },
     sprites:{
         up: playerUpImagem,
@@ -145,7 +146,7 @@ function animate(){
     player.draw()
 
       let movimentando = true;
-      player.movimentando = false;
+      player.animate = false;
       if(battle.started) return
 
     //Ativação da Batalha
@@ -208,7 +209,7 @@ function animate(){
 
       
       if(keys.w.pressed && lastKey === 'w') {
-        player.movimentando = true;
+        player.animate = true;
         player.image = player.sprites.up
 
           for ( let i = 0; i < fronteiras.length; i++){
@@ -235,7 +236,7 @@ function animate(){
           })
     }
       else if(keys.a.pressed && lastKey === 'a') {
-        player.movimentando = true;
+        player.animate = true;
         player.image = player.sprites.left
         for ( let i = 0; i < fronteiras.length; i++){
             const fronteira = fronteiras[i]
@@ -260,7 +261,7 @@ function animate(){
         })
         }
       else if(keys.s.pressed && lastKey === 's') {
-        player.movimentando = true;
+        player.animate = true;
         player.image = player.sprites.down
         for ( let i = 0; i < fronteiras.length; i++){
             const fronteira = fronteiras[i]
@@ -285,7 +286,7 @@ function animate(){
         })
         }
       else if(keys.d.pressed && lastKey === 'd') {
-        player.movimentando = true;
+        player.animate = true;
         player.image = player.sprites.right
         for ( let i = 0; i < fronteiras.length; i++){
             const fronteira = fronteiras[i]
@@ -322,9 +323,27 @@ const battleBackground = new Sprite({position: {
  },
   image: battleBackgroundImage
 })
+
+
+
+const laprasImage = new Image()
+laprasImage.src = './IMG/lapras.png'
+const lapras = new Sprite({
+    position:{
+        x: 600,
+        y: 175
+    },
+    image: laprasImage,
+    frames:{
+        max: 10,
+        hold: 5
+    },
+    animate: true
+})
 function animateBattle(){
     window.requestAnimationFrame(animateBattle)
     battleBackground.draw()
+    lapras.draw()
 }
 
 //animateBattle()
