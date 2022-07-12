@@ -346,7 +346,7 @@ charmeleonImage.src = './IMG/charmeleon.png'
 const charmeleon = new Sprite({
     position:{
         x: 180,
-        y: 255
+        y: 220
     },
     image: charmeleonImage,
     frames:{
@@ -356,6 +356,8 @@ const charmeleon = new Sprite({
     animate: true
 })
 
+
+
 function animateBattle(){
     window.requestAnimationFrame(animateBattle)
     battleBackground.draw()
@@ -363,7 +365,7 @@ function animateBattle(){
     charmeleon.draw()
 }
 
-//animateBattle()
+animateBattle()
 
 let lastKey = ''
 

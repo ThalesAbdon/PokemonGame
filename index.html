@@ -1,18 +1,71 @@
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
+     *{
+        font-family: 'Press Start 2P', cursive;
+     }
 body{
     background-color: rgb(49, 48, 48);
 }
+
+h1{
+    margin: 0;
+}
+
+button{
+    border:0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover{
+background-color: rgb(138, 134, 134);
+}
 </style>
+</head>
 
 <div style="display: inline-block; position: relative;">
     <div
     id ="overlappingDiv"
-    style="background-color: black; position:absolute;
-     top: 0; right: 0; bottom: 0; left: 0; opacity: 0;
-     pointer-events: none;"></div>
+    style="
+    background-color: black; 
+    position:absolute;
+    top: 0; 
+    right: 0; 
+    bottom: 0; 
+    left: 0; 
+    opacity: 0;
+    pointer-events: none;
+    "
+    ></div>
     <canvas></canvas>
-</div>
+    
+    <div style="
+    background-color: rgb(245, 224, 157, 0.8); 
+    height: 125px; 
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 6px black solid;
+    display: flex;
+    ">
+    <div style ="width: 66.66%; display: grid; grid-template-columns: repeat(2,1fr);">
+        <button>Primeiro ataque</button>
+        <button>Segundo ataque</button>
+        <!--<button>Terceiro ataque</button>
+        <button>Quarto ataque</button>-->
+    </div>
+    <div style = "display: flex; align-items: center; justify-content: center; width: 33.33%; border-left: 4px black solid;">
+        <h1 style="font-size: 16px">Tipo de ataque</h1>
+    </div>
+     </div>
 
+
+
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js" 
 integrity="sha512-VEBjfxWUOyzl0bAwh4gdLEaQyDYPvLrZql3pw1ifgb6fhEvZl9iDDehwHZ+dsMzA0Jfww8Xt7COSZuJ/slxc4Q==" 
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
