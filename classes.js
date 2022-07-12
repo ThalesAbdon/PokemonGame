@@ -53,7 +53,7 @@ class Fronteira {
     }
 
     draw(){
-        k.fillStyle = 'rgba(255,0,0,0.2'
+        k.fillStyle = 'rgba(255,0,0,0.1)'
         k.fillRect(this.position.x, this.position.y, this.width,this.height)
     }
 }

@@ -335,15 +335,32 @@ const lapras = new Sprite({
     },
     image: laprasImage,
     frames:{
-        max: 10,
+        max: 33,
         hold: 5
     },
     animate: true
 })
+
+const charmeleonImage = new Image()
+charmeleonImage.src = './IMG/charmeleon.png'
+const charmeleon = new Sprite({
+    position:{
+        x: 180,
+        y: 255
+    },
+    image: charmeleonImage,
+    frames:{
+        max: 76,
+        hold: 8
+    },
+    animate: true
+})
+
 function animateBattle(){
     window.requestAnimationFrame(animateBattle)
     battleBackground.draw()
     lapras.draw()
+    charmeleon.draw()
 }
 
 //animateBattle()
