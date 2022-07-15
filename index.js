@@ -338,7 +338,8 @@ const lapras = new Sprite({
         max: 33,
         hold: 5
     },
-    animate: true
+    animate: true,
+    isEnemy: true
 })
 
 const charmeleonImage = new Image()
@@ -366,6 +367,21 @@ function animateBattle(){
 }
 
 animateBattle()
+
+//ativar botões de ataque 
+document.querySelectorAll('button').forEach((button) => {
+    button.addEventListener('click', () => {
+        charmeleon.attack({
+             attack:{
+               name:"Tackle",
+               damage: 10,
+               type: "Normal"
+            },
+            atacado: lapras
+        })
+    }) 
+})
+
 
 let lastKey = ''
 

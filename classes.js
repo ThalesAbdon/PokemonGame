@@ -1,5 +1,5 @@
 class Sprite {
-    constructor({position,image,frames = {max : 1, hold: 10}, sprites, animate = false}){
+    constructor({position,image,frames = {max : 1, hold: 10}, sprites, animate = false, isEnemy = false}){
         this.position = position
         this.image = image
         this.frames = {...frames, value: 0, elapsed: 0}
@@ -12,10 +12,14 @@ class Sprite {
         }
         this.animate = animate;
         this.sprites = sprites
+        this.opacity = 1
+        this.health = 100
+        this.isEnemy = isEnemy
     }
 
     draw(){
-       
+        k.save()
+        k.globalAlpha = this.opacity
         k.drawImage(
             this.image,
             this.frames.value *  this.width,
@@ -26,7 +30,7 @@ class Sprite {
             this.position.y,
             this.image.width / this.frames.max,
             this.image.height)
-             
+        k.restore()
             if(!this.animate) return
             if(this.frames.max > 1){
                 this.frames.elapsed++
@@ -41,6 +45,44 @@ class Sprite {
             }
         }
         }
+    attack({attack,atacado}){
+        const timeline = gsap.timeline()
+        this.health -= attack.damage
+        
+        let distanciaDoImpacto = 20
+        if(this.isEnemy) distanciaDoImpacto = -20
+
+        let barraDeVida = '#barraDeVidaInimiga'
+        if(this.isEnemy) barraDeVida ='#barraDeVidaPlayer'
+
+         timeline.to(this.position, {
+            x: this.position.x - distanciaDoImpacto
+         }).to(this.position, {
+            x: this.position.x + distanciaDoImpacto * 2.5 ,
+            duration: 0.1,
+            OnComplete: () => {
+            gsap.to(barraDeVida, {
+                width: this.health + '%'
+
+            })
+            gsap.to(atacado.position, {
+                x: atacado.position.x + distanciaDoImpacto,
+                y: atacado.position.y - 5,
+                yoyo: true,
+                repeat: 1,
+                duration: 0.13
+            })
+            gsap.to(atacado, {
+                opacity: 0,
+                repeat: 1,
+                yoyo: true,
+                duration: 0.11
+            })
+            }
+         }).to(this.position, {
+            x: this.position.x
+         })
+    }    
 }
 
 class Fronteira {
