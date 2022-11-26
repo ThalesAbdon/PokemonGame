@@ -6,6 +6,7 @@ class Sprite {
     sprites,
     animate = false,
     isEnemy = false,
+    rotation = 0,
   }) {
     this.position = position;
     this.image = image;
@@ -22,10 +23,20 @@ class Sprite {
     this.opacity = 1;
     this.health = 100;
     this.isEnemy = isEnemy;
+    this.rotation = rotation;
   }
 
   draw() {
     k.save();
+    k.translate(
+      this.position.x + this.width / 2,
+      this.position.y + this.height / 2
+    );
+    k.rotate(this.rotation);
+    k.translate(
+      -this.position.x - this.width / 2,
+      -this.position.y - this.height / 2
+    );
     k.globalAlpha = this.opacity;
     k.drawImage(
       this.image,
@@ -54,6 +65,8 @@ class Sprite {
   }
   attack({ attack, atacado, renderedSprites }) {
     let barraDeVida = "#barraDeVidaInimiga";
+    let rotation = 1;
+    if (this.isEnemy) rotation = -2.4;
     if (this.isEnemy) barraDeVida = "#barraDeVidaPlayer";
     this.health -= attack.damage;
 
@@ -110,6 +123,7 @@ class Sprite {
             hold: 10,
           },
           animate: true,
+          rotation: this.rotation,
         });
         renderedSprites.push(fireball);
         gsap.to(fireball.position, {
