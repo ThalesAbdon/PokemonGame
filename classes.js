@@ -7,6 +7,7 @@ class Sprite {
     animate = false,
     isEnemy = false,
     rotation = 0,
+    name,
   }) {
     this.position = position;
     this.image = image;
@@ -24,6 +25,7 @@ class Sprite {
     this.health = 100;
     this.isEnemy = isEnemy;
     this.rotation = rotation;
+    this.name = name;
   }
 
   draw() {
@@ -64,6 +66,10 @@ class Sprite {
     }
   }
   attack({ attack, atacado, renderedSprites }) {
+    document.querySelector("#battleLog").style.display = "block";
+    document.querySelector("#battleLog").innerHTML =
+      this.name + " used " + attack.name;
+    ("dsaasdsdaasdbsadsdalsasadosadck");
     let barraDeVida = "#barraDeVidaInimiga";
     let rotation = 1;
     if (this.isEnemy) rotation = -2.4;
