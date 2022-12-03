@@ -5,27 +5,20 @@ class Sprite {
     frames = { max: 1, hold: 10 },
     sprites,
     animate = false,
-    isEnemy = false,
     rotation = 0,
-    name,
   }) {
     this.position = position;
-    this.image = image;
+    this.image = new Image();
     this.frames = { ...frames, value: 0, elapsed: 0 };
-
     this.image.onload = () => {
       this.width = this.image.width / this.frames.max;
       this.height = this.image.height;
-      console.log(this.width);
-      console.log(this.height);
     };
+    this.image.src = image.src;
     this.animate = animate;
     this.sprites = sprites;
     this.opacity = 1;
-    this.health = 100;
-    this.isEnemy = isEnemy;
     this.rotation = rotation;
-    this.name = name;
   }
 
   draw() {
@@ -65,16 +58,58 @@ class Sprite {
       }
     }
   }
+}
+
+class Monster extends Sprite {
+  constructor({
+    position,
+    image,
+    frames = { max: 1, hold: 10 },
+    sprites,
+    animate = false,
+    rotation = 0,
+    isEnemy = false,
+    name,
+    attacks,
+  }) {
+    super({
+      position,
+      image,
+      frames,
+      sprites,
+      animate,
+      rotation,
+    });
+    this.health = 100;
+    this.isEnemy = isEnemy;
+    this.name = name;
+    this.attacks = attacks;
+  }
+
+  faint() {
+    document.querySelector("#battleLog").innerHTML = this.name + " Fainted!";
+    gsap.to(this.position, {
+      y: this.position.y + 1,
+    });
+    gsap.to(this, {
+      opacity: 0,
+    });
+    audio.battle.stop();
+    audio.victory.play();
+  }
+
   attack({ attack, atacado, renderedSprites }) {
     document.querySelector("#battleLog").style.display = "block";
     document.querySelector("#battleLog").innerHTML =
       this.name + " used " + attack.name;
-    ("dsaasdsdaasdbsadsdalsasadosadck");
+
     let barraDeVida = "#barraDeVidaInimiga";
+    if (this.isEnemy) barraDeVida = "#barraDeVidaPlayer";
+
     let rotation = 1;
     if (this.isEnemy) rotation = -2.4;
-    if (this.isEnemy) barraDeVida = "#barraDeVidaPlayer";
-    this.health -= attack.damage;
+
+    atacado.health -= attack.damage;
 
     switch (attack.name) {
       case "Tackle":
@@ -91,8 +126,9 @@ class Sprite {
             x: this.position.x + distanciaDoImpacto * 2.5,
             duration: 0.1,
             OnComplete: () => {
+              audio.tackleHit.play();
               gsap.to(barraDeVida, {
-                width: this.health + "%",
+                width: atacado.health + "%",
               });
               gsap.to(atacado.position, {
                 x: atacado.position.x + distanciaDoImpacto,
@@ -115,6 +151,7 @@ class Sprite {
         break;
 
       case "Fireball":
+        audio.initFireball.play();
         const fireballImage = new Image();
         fireballImage.src = "./IMG/fireball.png";
         const fireball = new Sprite({
@@ -137,8 +174,9 @@ class Sprite {
           y: atacado.position.y,
           duration: 0.4,
           onComplete: () => {
+            audio.fireballHit.play();
             gsap.to(barraDeVida, {
-              width: this.health + "%",
+              width: atacado.health + "%",
             });
 
             gsap.to(atacado, {
@@ -146,6 +184,46 @@ class Sprite {
               repeat: 1,
               yoyo: true,
               duration: 0.11,
+            });
+
+            renderedSprites.pop();
+          },
+        });
+        break;
+      case "Iceball":
+        audio.initIceball.play();
+        const iceballImage = new Image();
+        iceballImage.src = "./IMG/iceball.png";
+        const iceball = new Sprite({
+          position: {
+            x: this.position.x + 50,
+            y: this.position.y + 90,
+          },
+
+          image: iceballImage,
+          frames: {
+            max: 4,
+            hold: 10,
+          },
+          animate: true,
+          rotation: this.rotation,
+        });
+        renderedSprites.push(iceball);
+        gsap.to(iceball.position, {
+          x: atacado.position.x + 120,
+          y: atacado.position.y + 50,
+          duration: 0.6,
+          onComplete: () => {
+            audio.iceballHit.play();
+            gsap.to(barraDeVida, {
+              width: atacado.health + "%",
+            });
+
+            gsap.to(atacado, {
+              opacity: 0,
+              repeat: 1,
+              yoyo: true,
+              duration: 0.15,
             });
 
             renderedSprites.pop();

@@ -8,70 +8,119 @@ const battleBackground = new Sprite({
   image: battleBackgroundImage,
 });
 
-const laprasImage = new Image();
-laprasImage.src = "./IMG/lapras.png";
-const lapras = new Sprite({
-  position: {
-    x: 600,
-    y: 175,
-  },
-  image: laprasImage,
-  frames: {
-    max: 33,
-    hold: 5,
-  },
-  animate: true,
-  isEnemy: true,
-  name: "Lapras",
-});
+let lapras;
+let charmeleon;
+let renderedSprites;
+let battleAnimationId;
+let queue;
 
-const charmeleonImage = new Image();
-charmeleonImage.src = "./IMG/charmeleon.png";
-const charmeleon = new Sprite({
-  position: {
-    x: 180,
-    y: 220,
-  },
-  image: charmeleonImage,
-  frames: {
-    max: 76,
-    hold: 8,
-  },
-  animate: true,
-  name: "Charmeleon",
-});
+function initBattle() {
+  document.querySelector("#userInterface").style.display = "block";
+  document.querySelector("#battleLog").style.display = "none";
+  document.querySelector("#barraDeVidaInimiga").style.width = "100%";
+  document.querySelector("#barraDeVidaPlayer").style.width = "100%";
+  document.querySelector("#attacksBox").replaceChildren();
 
-const renderedSprites = [];
+  lapras = new Monster(monsters.Lapras);
+  charmeleon = new Monster(monsters.Charmeleon);
+  renderedSprites = [lapras, charmeleon];
+  queue = [];
+
+  charmeleon.attacks.forEach((attack) => {
+    const button = document.createElement("button");
+    button.innerHTML = attack.name;
+    document.querySelector("#attacksBox").append(button);
+  });
+
+  //ativar botões de ataque
+  document.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const selectedSkill = attacks[e.currentTarget.innerHTML];
+      charmeleon.attack({
+        attack: selectedSkill,
+        atacado: lapras,
+        renderedSprites,
+      });
+
+      if (lapras.health <= 0) {
+        queue.push(() => {
+          lapras.faint();
+        });
+
+        queue.push(() => {
+          //fade back to black
+          gsap.to("#overlappingDiv", {
+            opacity: 1,
+            onComplete: () => {
+              cancelAnimationFrame(battleAnimationId);
+              animate();
+              document.querySelector("#userInterface").style.display = "none";
+              gsap.to("#overlappingDiv", {
+                opacity: 0,
+              });
+              battle.started = false;
+              audio.Map.play();
+            },
+          });
+        });
+      }
+
+      // Enemy attacks
+      const randomAttack =
+        lapras.attacks[Math.floor(Math.random() * lapras.attacks.length)];
+      queue.push(() => {
+        lapras.attack({
+          attack: randomAttack,
+          atacado: charmeleon,
+          renderedSprites,
+        });
+
+        if (charmeleon.health <= 0) {
+          queue.push(() => {
+            charmeleon.faint();
+          });
+          queue.push(() => {
+            //fade back to black
+            gsap.to("#overlappingDiv", {
+              opacity: 1,
+              onComplete: () => {
+                cancelAnimationFrame(battleAnimationId);
+                animate();
+                document.querySelector("#userInterface").style.display = "none";
+                gsap.to("#overlappingDiv", {
+                  opacity: 0,
+                });
+                battle.started = false;
+                audio.Map.play();
+              },
+            });
+          });
+        }
+      });
+    });
+    button.addEventListener("mouseenter", (e) => {
+      const attackType = attacks[e.currentTarget.innerHTML];
+      document.querySelector("#attackType").innerHTML = attackType.type;
+      document.querySelector("#attackType").style.color = attackType.color;
+    });
+    button.addEventListener("mouseleave", (e) => {
+      const attackType = attacks[e.currentTarget.innerHTML];
+      document.querySelector("#attackType").innerHTML = "";
+    });
+  });
+}
+
 function animateBattle() {
-  window.requestAnimationFrame(animateBattle);
+  battleAnimationId = window.requestAnimationFrame(animateBattle);
   battleBackground.draw();
+  console.log(battleAnimationId);
   lapras.draw();
   charmeleon.draw();
   renderedSprites.forEach((sprite) => {
     sprite.draw();
   });
 }
-
-animateBattle();
-const queue = [];
-//ativar botões de ataque
-document.querySelectorAll("button").forEach((button) => {
-  button.addEventListener("click", (e) => {
-    const selectedSkill = attacks[e.currentTarget.innerHTML];
-    charmeleon.attack({
-      attack: selectedSkill,
-      atacado: lapras,
-      renderedSprites,
-    });
-    queue.push(() => {
-      lapras.attack({
-        attack: attacks.Tackle,
-        atacado: charmeleon,
-        renderedSprites,
-      });
-    });
-  });
-});
+animate();
 
 document.querySelector("#battleLog").addEventListener("click", (e) => {
   if (queue.length > 0) {

@@ -38,12 +38,17 @@ background-color: rgb(138, 134, 134);
     left: 0; 
     opacity: 0;
     pointer-events: none;
+    z-index: 10;
     "
     ></div>
 
+    
+
+    <canvas></canvas>
+  <div id ='userInterface' style="display: none">
     <!-- Barra de vida do aliado (Charmeleon) -->
     <div style ="
-    background-color: rgb(255,255,255, 0.8);
+     background-color: rgb(255,255,255, 0.8);
      width: 200px;  
      position: absolute; 
      top: 200px; 
@@ -54,12 +59,24 @@ background-color: rgb(138, 134, 134);
      >
      <h1 style="font-size: 16px;">Charmeleon</h1>
        <div style="position: relative">
-           <div style="height: 5px; background-color: #bbb; margin-top: 10px;"></div>
-           <div id= "barraDeVidaPlayer"style="height: 5px; background-color: green;position: absolute; top: 0; left: 0; right: 0;"></div>
+            <div style="height: 5px; 
+                       background-color: #bbb; 
+                       margin-top: 10px;">
+            </div>
+           
+            <div id= "barraDeVidaPlayer"
+                style="height: 5px; 
+                background-color: green;
+                position: absolute; 
+                top: 0; 
+                left: 0; 
+                right: 0;">
+            </div>
        </div>
    </div>
 
 
+   
    <!-- Barra de vida do inimigo (Lapras) -->
     <div style ="
     background-color: rgb(255,255,255, 0.8);
@@ -73,14 +90,21 @@ background-color: rgb(138, 134, 134);
      >
       <h1 style="font-size: 16px;">Lapras</h1>
         <div style="position: relative">
-            <div style="height: 5px; background-color: #bbb; margin-top: 10px;"></div>
-            <div id= "barraDeVidaInimiga"style="height: 5px; background-color: green;position: absolute; top: 0; left: 0; right: 0;"></div>
+            <div style="height: 5px; 
+                        background-color: #bbb; 
+                        margin-top: 10px;">
+            </div>
+            
+            <div id= "barraDeVidaInimiga"
+                 style="height: 5px; 
+                        background-color: green;
+                        position: absolute; 
+                        top: 0; 
+                        left: 0; 
+                        right: 0;">
+            </div>
         </div>
     </div>
-    
-    
-
-    <canvas></canvas>
     
     <div style="
     background-color: rgb(245, 224, 157, 0.8); 
@@ -106,26 +130,32 @@ background-color: rgb(138, 134, 134);
     display: none;
     cursor: pointer;
     "> KKKKKKKKKKKKKK</div>
-    <div style ="width: 66.66%; display: grid; grid-template-columns: repeat(2,1fr);">
-        <button>Tackle</button>
-        <button>Fireball</button>
-        <!--<button>Terceiro ataque</button>
-        <button>Quarto ataque</button>-->
-    </div>
-    <div style = "display: flex; align-items: center; justify-content: center; width: 33.33%; border-left: 4px black solid;">
-        <h1 style="font-size: 16px">Tipo de ataque</h1>
-    </div>
+      <div id = "attacksBox"
+           style ="width: 66.66%; 
+                   display: grid; 
+                   grid-template-columns: repeat(2,1fr);">
+      </div>
+    
+      <div style = "display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    width: 33.33%; 
+                    border-left: 4px black solid;">
+                    
+      <h1 id = "attackType" style="font-size: 16px"></h1>
+      </div>
      </div>
-
-
-
+    </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js" 
 integrity="sha512-VEBjfxWUOyzl0bAwh4gdLEaQyDYPvLrZql3pw1ifgb6fhEvZl9iDDehwHZ+dsMzA0Jfww8Xt7COSZuJ/slxc4Q==" 
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="data/audio.js"></script>
 <script src="data/collision.js"></script>
 <script src="data/ZonaBatalha.js"></script>
 <script src="data/attacks.js"></script>
+<script src="data/monsters.js"></script>
 <script src="classes.js"></script>
 <script src="index.js"></script>
 <script src="battleScene.js"></script>

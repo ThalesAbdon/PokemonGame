@@ -1,7 +1,6 @@
 const canvas = document.querySelector("canvas");
 const k = canvas.getContext("2d");
 console.log(battleZonesDados);
-
 canvas.width = 1024;
 canvas.height = 576;
 
@@ -134,7 +133,6 @@ function animate() {
         box2: fronteira,
       })
     ) {
-      console.log("Colidindo!");
     }
   });
 
@@ -170,9 +168,12 @@ function animate() {
         overTouchArea > (player.width * player.height) / 4 &&
         Math.random() < 0.05
       ) {
-        console.log("BATALHA ATIVADA!");
         //desativa a animação
         window.cancelAnimationFrame(animationId);
+        audio.Map.stop();
+        audio.initBattle.play();
+        audio.battle.play();
+
         battle.started = true;
         gsap.to("#overlappingDiv", {
           opacity: 1,
@@ -182,13 +183,14 @@ function animate() {
           onComplete() {
             gsap.to("#overlappingDiv", {
               opacity: 1,
-              duration: 0.2,
+              duration: 0.5,
               onComplete() {
                 //ativa a animação de batalha
+                initBattle();
                 animateBattle();
                 gsap.to("#overlappingDiv", {
                   opacity: 0,
-                  duration: 0.1,
+                  duration: 0.3,
                 });
               },
             });
@@ -338,7 +340,6 @@ window.addEventListener("keyup", (e) => {
   switch (e.key) {
     case "w":
       keys.w.pressed = false;
-      console.log("nao está sendo pressionado");
       break;
     case "a":
       keys.a.pressed = false;
@@ -349,5 +350,12 @@ window.addEventListener("keyup", (e) => {
     case "d":
       keys.d.pressed = false;
       break;
+  }
+});
+let clicked = false;
+addEventListener("click", () => {
+  if (!clicked) {
+    audio.Map.play();
+    clicked = true;
   }
 });
