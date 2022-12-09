@@ -1,3 +1,4 @@
+let musicActivated = true;
 class Sprite {
   constructor({
     position,

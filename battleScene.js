@@ -109,18 +109,14 @@ function initBattle() {
     });
   });
 }
-
 function animateBattle() {
   battleAnimationId = window.requestAnimationFrame(animateBattle);
   battleBackground.draw();
   console.log(battleAnimationId);
-  lapras.draw();
-  charmeleon.draw();
   renderedSprites.forEach((sprite) => {
     sprite.draw();
   });
 }
-animate();
 
 document.querySelector("#battleLog").addEventListener("click", (e) => {
   if (queue.length > 0) {

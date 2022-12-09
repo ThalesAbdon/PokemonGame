@@ -166,31 +166,33 @@ function animate() {
           box2: battleZone,
         }) &&
         overTouchArea > (player.width * player.height) / 4 &&
-        Math.random() < 0.05
+        Math.random() < 0.001
       ) {
         //desativa a animação
         window.cancelAnimationFrame(animationId);
+
         audio.Map.stop();
         audio.initBattle.play();
         audio.battle.play();
 
         battle.started = true;
+
         gsap.to("#overlappingDiv", {
           opacity: 1,
-          repeat: 12,
+          repeat: 3,
           yoyo: true,
-          duration: 0.1,
+          duration: 0.4,
           onComplete() {
             gsap.to("#overlappingDiv", {
               opacity: 1,
-              duration: 0.5,
+              duration: 0.4,
               onComplete() {
                 //ativa a animação de batalha
                 initBattle();
                 animateBattle();
                 gsap.to("#overlappingDiv", {
                   opacity: 0,
-                  duration: 0.3,
+                  duration: 0.4,
                 });
               },
             });
@@ -226,7 +228,7 @@ function animate() {
 
     if (movimentando)
       movimentos.forEach((movimento) => {
-        movimento.position.y += 5;
+        movimento.position.y += 4.5;
       });
   } else if (keys.a.pressed && lastKey === "a") {
     player.animate = true;
@@ -253,7 +255,7 @@ function animate() {
 
     if (movimentando)
       movimentos.forEach((movimento) => {
-        movimento.position.x += 5;
+        movimento.position.x += 4.5;
       });
   } else if (keys.s.pressed && lastKey === "s") {
     player.animate = true;
@@ -280,7 +282,7 @@ function animate() {
 
     if (movimentando)
       movimentos.forEach((movimento) => {
-        movimento.position.y -= 5;
+        movimento.position.y -= 4.5;
       });
   } else if (keys.d.pressed && lastKey === "d") {
     player.animate = true;
@@ -307,7 +309,7 @@ function animate() {
 
     if (movimentando)
       movimentos.forEach((movimento) => {
-        movimento.position.x -= 5;
+        movimento.position.x -= 4.5;
       });
   }
 }
@@ -353,7 +355,7 @@ window.addEventListener("keyup", (e) => {
   }
 });
 let clicked = false;
-addEventListener("click", () => {
+addEventListener("keydown", () => {
   if (!clicked) {
     audio.Map.play();
     clicked = true;
