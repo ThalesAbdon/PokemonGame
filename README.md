@@ -8,6 +8,9 @@ Um projeto baseado nos jogos de pokémon da terceira geração( Fire Red/Leaf Gr
 jogos favoritos era pokemon, amava jogar no meu gameboy e foi um dos motivos que me fizeram me tornar programador, resolvi então me desafiar e tentar refazer algo similar
 aos jogos da franquia.
 <h2></h2>
+<h2> :blue_book: OBJETIVO </h2>
+O objetivo desse projeto foi melhorar meu desenvolvimento como programador e demostrar a minha evolução na parte técnica ( hard skill).
+<h2></h2>
 <h2> 🛠️ FERRAMENTAS</h2>
 
  + HTML,CSS e Javascript
@@ -16,4 +19,6 @@ aos jogos da franquia.
 <h2></h2>
 <h2> :video_game: ACESSO </h2> 
 Para jogar, basta acessar: https://pkmgame.netlify.app
+<h2></h2>
+ 
 
