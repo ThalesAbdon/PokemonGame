@@ -18,7 +18,7 @@ O objetivo desse projeto foi melhorar meu desenvolvimento como programador e dem
  + Músicas foram retiradas da internet (Youtube)
 <h2></h2>
 <h2> :video_game: ACESSO </h2> 
-Para jogar, basta acessar: https://pkmgame.netlify.app
+Para jogar, basta clickar: <a href="https://pkmgame.netlify.app/" target="_blank">AQUI!</a>
 <h2></h2>
  
 
